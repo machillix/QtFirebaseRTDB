@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QJsonDocument>
 #include <QVariantMap>
+#include <QJsonObject>
 
 FireBaseHandler::FireBaseHandler(QObject *parent)
     : QObject{parent}
@@ -34,5 +35,16 @@ FireBaseHandler::~FireBaseHandler()
 
 void FireBaseHandler::networkReplyReadyToRead()
 {
-    qDebug() << networkReply->readAll();
+    QByteArray array = networkReply->readAll();
+    qDebug() << array;
+    QJsonDocument document = QJsonDocument::fromJson(array);
+    qDebug() << document.isEmpty();
+    QJsonObject jsonObject = document.object();
+    qDebug() << jsonObject.count();
+    QStringList list = jsonObject.keys();
+
+    foreach (QString val, list) {
+        qDebug() << val;
+
+    }
 }
